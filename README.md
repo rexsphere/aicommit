@@ -1,4 +1,4 @@
-# aicommit
+here is # aicommit
 
 `aicommit` is a script that automatically adds changed files in your git repository and uses a local LLM (Large Language Model) to generate concise, one-line commit messages.
 
