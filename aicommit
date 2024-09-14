@@ -11,7 +11,7 @@ def add_changed_files(logger):
     status_output = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True).stdout
     logger.debug(f"Git status output: {status_output}")
     for line in status_output.split('\n'):
-        if line.startswith(' M'):
+        if line.startswith(' M') or line.startswith('??'):
             file_path = line[3:]
             logger.debug(f"Adding file: {file_path}")
             result = subprocess.run(['git', 'add', file_path], capture_output=True, text=True)
@@ -24,21 +24,29 @@ def add_changed_files(logger):
         sys.exit(0)
 
 def get_git_changes(logger):
-    logger.debug("Running git diff --staged")
-    result = subprocess.run(['git', 'diff', '--staged'], capture_output=True, text=True)
-    logger.debug(f"Git diff result: {result.stdout}")
-    return result.stdout
+    logger.debug("Running git diff --staged --name-status")
+    result = subprocess.run(['git', 'diff', '--staged', '--name-status'], capture_output=True, text=True)
+    logger.debug(f"Git diff --name-status result: {result.stdout}")
+    return result.stdout.strip()
 
 def analyze_changes(changes, logger):
     prompt = f"""
-Below is a diff of all staged changes, coming from the command:
+Below is a summary of all staged changes, coming from the command:
 
 ```
-git diff --cached
+git diff --staged --name-status
 ```
 
-Please generate a CONCISE, ONE-LINE commit message for these changes. ONLY DESCRIBE WHAT CHANGED.  DO NOT INCLUDE SOURCE CODE IN YOUR ONE LINE SUMMARY.  Please take time to think through this, you'll receive a reward for a job well done.
+Each line represents a file and its change status:
 
+- `A` means the file was added
+- `M` means the file was modified
+- `D` means the file was deleted
+- `R` means the file was renamed
+
+Please generate a concise, one-line commit message that accurately describes these changes. Do not include source code in your summary.
+
+Changes:
 {changes}
 """
     logger.debug(f"Sending prompt to LLM: {prompt}")
