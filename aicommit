@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/Users/pruthvirajadhav/code/aicommit/.venv/bin
 import sys
 import os
 import subprocess
@@ -50,7 +50,7 @@ Changes:
 {changes}
 """
     logger.debug(f"Sending prompt to LLM: {prompt}")
-    response = ollama.generate(model='llama3.1', prompt=prompt)
+    response = ollama.generate(model='llama3.2:1b', prompt=prompt)
     logger.debug(f"LLM response: {response}")
     return response['response'].strip()
 
