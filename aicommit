@@ -44,7 +44,7 @@ Each line represents a file and its change status:
 - `D` means the file was deleted
 - `R` means the file was renamed
 
-Please generate a concise, one-line commit message that accurately describes these changes. Do not include source code in your summary.
+Please generate a concise, one-line commit message that accurately describes these changes. Do include source code in your summary.
 
 Changes:
 {changes}
