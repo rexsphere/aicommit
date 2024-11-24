@@ -50,7 +50,7 @@ Changes:
 {changes}
 """
     logger.debug(f"Sending prompt to LLM: {prompt}")
-    response = ollama.generate(model='llama3.2:1b', prompt=prompt)
+    response = ollama.generate(model='llama3.2', prompt=prompt)
     logger.debug(f"LLM response: {response}")
     return response['response'].strip()
 
